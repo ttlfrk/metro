@@ -1,0 +1,219 @@
+
+{
+	"1": {
+		"health_warning": 0,
+		"limited_sale_qty": null,
+		"id": 216703,
+		"slug": "greenfield-chernyj-golden-ceylon-100x2g",
+		"name": "Чай Greenfield Golden Ceylon черный (2г х 100шт), 200г",
+		"name_highlight": "(2г х 100шт), 200г",
+		"article": 393832,
+		"main_article": 0,
+		"main_article_slug": null,
+		"is_target": false,
+		"category_id": 413917,
+		"url": "/products/greenfield-chernyj-golden-ceylon-100x2g",
+		"images": [
+			"https://cdn.metro-cc.ru/ru/ru_pim_468311001001_01.png",
+			"https://cdn.metro-cc.ru/ru/ru_pim_468311001001_02.png",
+			"https://cdn.metro-cc.ru/ru/ru_pim_468311001001_03.png"
+		],
+		"pick_up": false,
+		"rating": 0,
+		"icons": [
+			{
+				"id": 4313,
+				"badge_bg_colors": [
+					"#FFED00"
+				],
+				"rkn_icon": false,
+				"caption": "EDLP (Every day low price) Желтый - всегда выгодный ЕКОМ+ТЦ",
+				"image": null,
+				"type": "badge",
+				"is_only_for_sales": false,
+				"stores": [
+					10,
+					11,
+					12,
+					13,
+					14,
+					15,
+					16,
+					17,
+					18,
+					19,
+					20,
+					21,
+					22,
+					23,
+					24,
+					25,
+					26,
+					27,
+					28,
+					29,
+					30,
+					31,
+					32,
+					33,
+					34,
+					35,
+					36,
+					37,
+					38,
+					39,
+					40,
+					41,
+					42,
+					43,
+					44,
+					45,
+					46,
+					47,
+					48,
+					49,
+					50,
+					51,
+					52,
+					53,
+					54,
+					55,
+					56,
+					57,
+					58,
+					59,
+					60,
+					61,
+					63,
+					64,
+					65,
+					66,
+					67,
+					68,
+					69,
+					70,
+					71,
+					72,
+					73,
+					74,
+					76,
+					77,
+					78,
+					82,
+					83,
+					86,
+					88,
+					94,
+					95,
+					202,
+					303,
+					304,
+					306,
+					307,
+					308,
+					309,
+					310,
+					311,
+					317,
+					318,
+					320,
+					322,
+					336,
+					337,
+					340,
+					342,
+					356,
+					357,
+					363,
+					444,
+					1001,
+					900013,
+					900019
+				],
+				"caption_settings": [
+					{
+						"colors": [
+							"#002D72"
+						],
+						"text": "Всегда выгодный"
+					}
+				],
+				"sort": null,
+				"image_png": null,
+				"image_svg": null,
+				"description": "Товары по стабильно низкой цене отмечены ярко-желтыми значками на сайте и в ТЦ METRO. Выгода увеличивается с увеличением количества приобретаемого товара.",
+				"end_date": "2030-11-30T23:00:00",
+				"start_date": "2023-11-24T00:00:00",
+				"status": true
+			}
+		],
+		"manufacturer": {
+			"id": 1530,
+			"image": null,
+			"name": "GREENFIELD"
+		},
+		"packing": {
+			"size": 1,
+			"type": "шт",
+			"pack_factors": {
+				"instamart": 1
+			}
+		},
+		"stocks": [
+			{
+				"value": 244,
+				"text": "Товара много",
+				"eshop_availability": true,
+				"scale": 100,
+				"prices_per_unit": {
+					"old_price": 359,
+					"offline": {
+						"price": 359,
+						"old_price": null,
+						"type": null,
+						"offline_discount": null,
+						"offline_promo": false
+					},
+					"price": 319,
+					"is_promo": true,
+					"levels": [
+						{
+							"count": 3,
+							"price": 279
+						},
+						{
+							"count": 18,
+							"price": 229
+						}
+					],
+					"online_levels": null,
+					"discount": 11
+				},
+				"prices": {
+					"price": 319,
+					"is_promo": true,
+					"old_price": 359,
+					"offline": {
+						"old_price": null,
+						"price": 359,
+						"type": null,
+						"offline_discount": null,
+						"offline_promo": false
+					},
+					"levels": [
+						{
+							"count": 3,
+							"price": 279
+						},
+						{
+							"count": 18,
+							"price": 229
+						}
+					],
+					"online_levels": null,
+					"discount": 11
+				}
+			}
+		]
+	}
+}
