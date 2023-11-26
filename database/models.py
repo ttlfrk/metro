@@ -16,59 +16,6 @@ from sqlalchemy.orm import relationship
 from database.connect import Base
 
 
-class Category(Base):
-    __tablename__ = 'categories'
-    __table_args__ = (
-        PrimaryKeyConstraint(
-            'id',
-            name='categories__id__pkey',
-        ),
-        UniqueConstraint(
-            'name', 'parent_id',
-            name='categories__name__parent_id__unique',
-        ),
-        CheckConstraint(
-            sqltext='LENGTH(name) > 2',
-            name='categories__name__check',
-        ),
-    )
-
-    # Columns
-    id: Mapped[int] = mapped_column(
-        Integer(),
-        autoincrement=True,
-    )
-    site_id: Mapped[int] = mapped_column(
-        Integer(),
-    )
-    slug: Mapped[str] = mapped_column(
-        String(255),
-    )
-    name: Mapped[str] = mapped_column(
-        String(255),
-    )
-
-    # Relationships
-    parent_id: Mapped[int] = mapped_column(
-        ForeignKey(
-            column='categories.id',
-            ondelete='RESTRICT',
-            name='categories__parent_id__fkey',
-        ),
-    )
-    parent: Mapped['Category'] = relationship(
-        'Category',
-        back_populates='childs',
-        remote_side=[id],
-    )
-    childs: Mapped[List['Category']] = relationship(
-        back_populates='parent',
-    )
-    products: Mapped[List['Product']] = relationship(
-        back_populates='category',
-    )
-
-
 class Brand(Base):
     __tablename__ = 'brands'
     __table_args__ = (
@@ -82,7 +29,7 @@ class Brand(Base):
         ),
         CheckConstraint(
             sqltext='LENGTH(name) > 2',
-            name='categories__name__check',
+            name='brands__name__check',
         )
     )
 
@@ -90,6 +37,9 @@ class Brand(Base):
     id: Mapped[int] = mapped_column(
         Integer(),
         autoincrement=True,
+    )
+    site_id: Mapped[str] = mapped_column(
+        Integer(),
     )
     name: Mapped[str] = mapped_column(
         String(255),
@@ -114,8 +64,20 @@ class Product(Base):
         ),
         CheckConstraint(
             sqltext='LENGTH(name) > 2',
-            name='categories__name__check',
-        )
+            name='products__name__check',
+        ),
+        CheckConstraint(
+            sqltext='LENGTH(name) > 2',
+            name='products__slug__check',
+        ),
+        CheckConstraint(
+            sqltext='price > 0',
+            name='products__price__check',
+        ),
+        CheckConstraint(
+            sqltext='old_price IS null OR old_price > 0',
+            name='products__old_price__check',
+        ),
     )
 
     # Columns
@@ -133,7 +95,7 @@ class Product(Base):
         server_onupdate=func.now(),
     )
     site_id: Mapped[str] = mapped_column(
-        String(255),
+        Integer(),
     )
     article: Mapped[int] = mapped_column(
         Integer(),
@@ -152,16 +114,6 @@ class Product(Base):
         nullable=True,
     )
 
-    # Relations
-    category_id: Mapped[int] = mapped_column(
-        ForeignKey(
-            column=Category.id,
-            ondelete='RESTRICT',
-        ),
-    )
-    category: Mapped[Category] = relationship(
-        back_populates='products',
-    )
     brand_id: Mapped[int] = mapped_column(
         ForeignKey(
             column=Brand.id,

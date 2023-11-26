@@ -1,19 +1,43 @@
-import asyncio
+import logging
 
 from parser.metro_api import MetroApi
+from database.connect import get_db
+from database import crud
 
 
-async def main():
+def main():
 
-    metro = MetroApi(
-        _slfs='1700931145735',
-        store_id='356',
-        metro_api_session='N0utlQGDi1FNIViVVZLYsahZpgGpJAiZiXQGJI7H',
+    # Настройка логгирования
+    logging.basicConfig(
+        filename='metro.log',
+        filemode='w',
+        level=logging.DEBUG,
     )
-    r = await metro.get_products(
-        slug='chay',
-        user_agent='Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0',
+    # Парсинг категории Чаи
+    products = list()
+    metro = MetroApi()
+    metro.init_new_session()
+    [products.extend(p) for p in metro.get_products('chay', 0, 30)]
+
+    products = {
+        product['id']: dict(
+            name=product['name'],
+            slug=product['slug'],
+            article=product['article'],
+            price=product['stocks'][0]['prices_per_unit']['price'],
+            old_price=product['stocks'][0]['prices_per_unit']['old_price'],
+            brand=dict(
+                id=product['manufacturer']['id'],
+                name=product['manufacturer']['name'],
+            )
+        )
+        for product in products
+    }
+    logging.info('Запись/обновление %s продуктов' % len(products))
+    crud.create_or_update_products(
+        db=get_db(),
+        products=products,
     )
 
 
-asyncio.run(main())
+main()
