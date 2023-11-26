@@ -3,8 +3,8 @@ from database import models
 
 class BrandPerformer:
 
-    def __init__(self, site_id: int, name: str):
-        self.__site_id = site_id
+    def __init__(self, site_id: str, name: str):
+        self.__site_id = str(site_id)
         self.__name = name
 
     def __hash__(self) -> int:

@@ -31,7 +31,7 @@ def upgrade() -> None:
         ),
         sa.Column(
             'site_id',
-            sa.Integer(),
+            sa.String(255),
             nullable=False,
         ),
         sa.Column(
@@ -44,12 +44,16 @@ def upgrade() -> None:
             name='brands__id__pkey',
         ),
         sa.UniqueConstraint(
-            'name',
-            name='brands__name__unique',
+            'name', 'site_id',
+            name='brands__name__site_id__unique',
         ),
         sa.CheckConstraint(
-            sqltext='LENGTH(name) > 2',
+            sqltext='LENGTH(name) > 0',
             name='brands__name__check',
+        ),
+        sa.CheckConstraint(
+            sqltext='LENGTH(site_id) > 0',
+            name='brands__site_id__check',
         ),
     )
 
@@ -123,16 +127,20 @@ def upgrade() -> None:
             name='products__site_id__store_id__unique',
         ),
         sa.CheckConstraint(
-            sqltext='LENGTH(name) > 2',
+            sqltext='LENGTH(name) > 0',
             name='products__name__check',
         ),
         sa.CheckConstraint(
-            sqltext='LENGTH(name) > 2',
+            sqltext='LENGTH(name) > 0',
             name='products__slug__check',
         ),
         sa.CheckConstraint(
             sqltext='price > 0',
             name='products__price__check',
+        ),
+        sa.CheckConstraint(
+            sqltext='article > 0',
+            name='products__article__check',
         ),
         sa.CheckConstraint(
             sqltext='old_price IS null OR old_price > 0',

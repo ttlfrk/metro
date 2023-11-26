@@ -10,7 +10,7 @@ class ProductPerformer:
         self,
         site_id: int,
         store_id: int,
-        article: int,
+        article: str,
         slug: str,
         name: str,
         price: Union[int, float],
@@ -19,7 +19,7 @@ class ProductPerformer:
     ):
         self.__site_id = site_id
         self.__store_id = store_id
-        self.__article = article
+        self.__article = str(article)
         self.__slug = slug
         self.__name = name
         self.__price = self.__check_price(price)

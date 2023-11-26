@@ -38,7 +38,7 @@ def create_or_update_products(
             **product.to_dict(),
             brand=brands[product.brand],
         ) for product in products
-        if product not in exists_products
+        if product not in list(exists_products)
     }
     db.add_all(new_products.values())
 
@@ -83,7 +83,7 @@ def get_or_create_brands(
     new_brands = {
         brand: models.Brand(**brand.to_dict())
         for brand in brands
-        if brand not in exists
+        if brand not in list(exists)
     }
     db.add_all(new_brands.values())
     db.commit()

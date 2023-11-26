@@ -24,13 +24,17 @@ class Brand(Base):
             name='brands__id__pkey',
         ),
         UniqueConstraint(
-            'name',
-            name='brands__name__unique',
+            'name', 'site_id',
+            name='brands__name__site_id__unique',
         ),
         CheckConstraint(
-            sqltext='LENGTH(name) > 2',
+            sqltext='LENGTH(name) > 0',
             name='brands__name__check',
-        )
+        ),
+        CheckConstraint(
+            sqltext='LENGTH(site_id) > 0',
+            name='brands__site_id__check',
+        ),
     )
 
     # Columns
@@ -39,7 +43,7 @@ class Brand(Base):
         autoincrement=True,
     )
     site_id: Mapped[str] = mapped_column(
-        Integer(),
+        String(255),
     )
     name: Mapped[str] = mapped_column(
         String(255),
@@ -63,12 +67,16 @@ class Product(Base):
             name='products__site_id__store_id__unique',
         ),
         CheckConstraint(
-            sqltext='LENGTH(name) > 2',
+            sqltext='LENGTH(name) > 0',
             name='products__name__check',
         ),
         CheckConstraint(
-            sqltext='LENGTH(name) > 2',
+            sqltext='LENGTH(name) > 0',
             name='products__slug__check',
+        ),
+        CheckConstraint(
+            sqltext='LENGTH(article) > 0',
+            name='products__article__check',
         ),
         CheckConstraint(
             sqltext='price > 0',
@@ -100,8 +108,8 @@ class Product(Base):
     store_id: Mapped[int] = mapped_column(
         Integer(),
     )
-    article: Mapped[int] = mapped_column(
-        Integer(),
+    article: Mapped[str] = mapped_column(
+        String(255),
     )
     slug: Mapped[str] = mapped_column(
         String(255)

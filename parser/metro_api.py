@@ -171,7 +171,7 @@ class MetroApi:
         * allStocks: bool
         * slug: str - slug категории
 
-        Полный пример в ./request_example.json
+        Полный пример в ./metro_request_example.json
 
         ### Example
         ```
@@ -197,7 +197,7 @@ class MetroApi:
         if not self.__products_request:
             path = os.path.join(
                 os.getcwd(),
-                'parser/request_example.json',
+                'parser/metro_request_example.json',
             )
             with open(path, 'r', encoding='utf-8') as f:
                 self.__products_request: dict = json.load(f)
