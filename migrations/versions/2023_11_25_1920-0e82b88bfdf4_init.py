@@ -75,6 +75,11 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.Column(
+            'store_id',
+            sa.Integer(),
+            nullable=False,
+        ),
+        sa.Column(
             'site_id',
             sa.Integer(),
             nullable=False,
@@ -114,8 +119,8 @@ def upgrade() -> None:
             name='products__id__pkey',
         ),
         sa.UniqueConstraint(
-            'site_id',
-            name='products__site_id__unique',
+            'site_id', 'store_id',
+            name='products__site_id__store_id__unique',
         ),
         sa.CheckConstraint(
             sqltext='LENGTH(name) > 2',

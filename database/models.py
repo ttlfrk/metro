@@ -59,8 +59,8 @@ class Product(Base):
             name='products__id__pkey',
         ),
         UniqueConstraint(
-            'site_id',
-            name='products__site_id__unique',
+            'site_id', 'store_id',
+            name='products__site_id__store_id__unique',
         ),
         CheckConstraint(
             sqltext='LENGTH(name) > 2',
@@ -94,7 +94,10 @@ class Product(Base):
         server_default=func.now(),
         server_onupdate=func.now(),
     )
-    site_id: Mapped[str] = mapped_column(
+    site_id: Mapped[int] = mapped_column(
+        Integer(),
+    )
+    store_id: Mapped[int] = mapped_column(
         Integer(),
     )
     article: Mapped[int] = mapped_column(

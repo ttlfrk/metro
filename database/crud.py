@@ -1,60 +1,44 @@
+from typing import List
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from database import models
+from performers import BrandPerformer
+from performers import ProductPerformer
 
 
 def create_or_update_products(
     db: Session,
-    products: dict,
+    products: List[ProductPerformer],
 ) -> None:
     '''
     Обновление или создание новых продуктов (и брендов)
-
-    products должен быть:
-    ```
-    {
-        site_id: {
-            'article': 124,
-            'slug': 'chay_vkusniy',
-            'name': 'Чай вкусный',
-            'price': 124,
-            'old_price': 152,
-            'brand': {
-                'name': 'Чайная компания',
-                'id': 124,
-            }
-        }
-    }
-    ```
     '''
 
+    products = list(set(products))
     brands = get_or_create_brands(
         db=db,
-        brands={product['brand']['id']: product['brand']
-                for product in products.values()},
+        brands={product.brand for product in products},
     )
     db.add_all(brands.values())
     exists_products: tuple[models.Product] = db.execute(
         select(
             models.Product,
         ).where(
-            models.Product.site_id.in_(products.keys())
+            models.Product.site_id.in_({
+                product.site_id for product in products
+            })
         ),
     ).scalars().all()
 
     # Создание новых продуктов
     new_products = {
-        product_id: models.Product(
-            site_id=product_id,
-            article=products[product_id]['article'],
-            slug=products[product_id]['slug'],
-            name=products[product_id]['name'],
-            price=products[product_id]['price'],
-            old_price=products[product_id]['old_price'],
-            brand=brands[products[product_id]['brand']['id']],
-        ) for product_id in products.keys()
-        if product_id not in {p.site_id for p in exists_products}
+        product: models.Product(
+            **product.to_dict(),
+            brand=brands[product.brand],
+        ) for product in products
+        if product not in exists_products
     }
     db.add_all(new_products.values())
 
@@ -67,49 +51,44 @@ def create_or_update_products(
         'old_price',
     }
     for product in exists_products:
-        new = products[product.site_id]
+        new = products[products.index(product)]
         for param in params_for_update:
-            if getattr(product, param) != new[param]:
-                setattr(product, param, new[param])
+            if getattr(product, param) != getattr(new, param):
+                setattr(product, param, getattr(new, param))
                 db.add(product)
-        if product.brand_id != new['brand']['id']:
-            product.brand_id = new['brand']['id']
+        if product.brand != new.brand:
+            product.brand = brands[new.brand]
+            db.add(product)
     db.commit()
 
 
 def get_or_create_brands(
     db: Session,
-    brands: dict,
+    brands: List[BrandPerformer],
 ) -> dict:
     '''
-    Поиск или создание брендов
-
-    brands должен быть:
-    ```
-    {
-        site_id: {'id': 1, 'name': 'test'},
-        ...
-    }
-    ```
+    Поиск и/или создание брендов
     '''
     exists = db.execute(
         select(
             models.Brand,
         ).where(
-            models.Brand.site_id.in_(brands.keys()),
+            models.Brand.site_id.in_({
+                brand.site_id for brand in brands
+            }),
         ),
     ).scalars().all()
+    brands = list(set(brands))
 
     new_brands = {
-        brand_id: models.Brand(
-            site_id=brand_id,
-            name=brands[brand_id]['name']
-        ) for brand_id in brands.keys()
-        if brand_id not in {brand.site_id for brand in exists}
+        brand: models.Brand(**brand.to_dict())
+        for brand in brands
+        if brand not in exists
     }
     db.add_all(new_brands.values())
     db.commit()
     new_brands.update({
-        brand.site_id: brand for brand in exists
+        brands[brands.index(brand_model)]: brand_model
+        for brand_model in exists
     })
     return new_brands

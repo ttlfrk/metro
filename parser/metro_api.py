@@ -17,7 +17,7 @@ class MetroApi:
         self.__products_request = None
         self.__metro_api_domain = 'https://api.metro-cc.ru/'
 
-    def init_new_session(self, city_id: Union[int, None]) -> None:
+    def init_new_session(self, city_id: Union[int, None] = None) -> None:
         '''
         Создает и возвращает инициализированную сессию
 
@@ -88,7 +88,7 @@ class MetroApi:
     def get_products(
         self,
         slug: str,
-        start: int,
+        start: int = 0,
         step: int = 30,
         filters: List[dict] = [{
             'field': 'main_article',
